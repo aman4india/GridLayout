@@ -3,7 +3,6 @@ package com.aman.sqlite.view;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aman.sqlite.R;
@@ -57,10 +55,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         recyclerView.setAdapter(recyclerGridAdapter);
 
 
-
         Button saveBtn = findViewById(R.id.save_btn);
         saveBtn.setOnClickListener(view -> {
-            Log.e(TAG, "onCreate: " +nameEdit.getText().toString() );
             if (nameEdit.getText().toString().length() > 0 && phoneEdit.getText().toString().length() > 0) {
                 UserEntity userEntity = new UserEntity();
                 userEntity.setName(nameEdit.getText().toString());
