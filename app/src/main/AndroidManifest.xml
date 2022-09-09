@@ -16,10 +16,10 @@
         android:theme="@style/Theme.GridLayout"
         tools:targetApi="31">
         <activity
-            android:name="com.aman.sqlite.EditActivity"
+            android:name="com.aman.sqlite.view.EditActivity"
             android:exported="false" />
         <activity
-            android:name="com.aman.sqlite.MainActivity" android:windowSoftInputMode="stateAlwaysHidden"
+            android:name="com.aman.sqlite.view.MainActivity" android:windowSoftInputMode="stateAlwaysHidden"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.aman.sqlite.db;
+package com.aman.sqlite.data.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,13 +10,22 @@ import com.aman.sqlite.models.UserEntity;
 
 import java.util.ArrayList;
 
-public class Database extends SQLiteOpenHelper {
+public class UserDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "user_db";
-    private static final String TABLE_NAME = "user";
+    private static final String TABLE_NAME = "user_table";
     private static final int VERSION = 1;
 
-    public Database(Context context) {
+    private static UserDatabase userDatabase = null;
+
+    public UserDatabase(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
+    }
+
+    public static UserDatabase getInstance(Context context) {
+        if (userDatabase == null) {
+            userDatabase = new UserDatabase(context);
+        }
+        return userDatabase;
     }
 
     @Override
@@ -38,16 +47,14 @@ public class Database extends SQLiteOpenHelper {
     /**
      * Saves an item into sqlite database
      *
-     * @param names
-     * @param phone
+     * @param userEntity
      */
-    public void save(String names, String phone) {
+    public long save(UserEntity userEntity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("name", names);
-        values.put("phone", phone);
-        db.insert(TABLE_NAME, null, values);
-        db.close();
+        values.put("name", userEntity.getName());
+        values.put("phone", userEntity.getPhone());
+        return db.insert(TABLE_NAME, null, values);
     }
 
     /**
@@ -76,26 +83,24 @@ public class Database extends SQLiteOpenHelper {
     }
 
     /**
-     * Counts All  Records in sqlite
-     *
+     * Update All Records in sqlite
+     * @param userEntity
      * @return
      */
-    public int count() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM " + TABLE_NAME;
-        Cursor cursor = db.rawQuery(sql, null);
-        return cursor.getCount();
-    }
-
-    public int update(int id,String name, String phone) {
+    public long update(UserEntity userEntity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("phone", phone);
-        return db.update(TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(id)});
+        contentValues.put("name", userEntity.getName());
+        contentValues.put("phone", userEntity.getPhone());
+        return db.update(TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(userEntity.getId())});
     }
 
-    public Integer deleteUser(String phone) {
+    /**
+     * delete Records in sqlite
+     * @param phone
+     * @return
+     */
+    public long deleteUser(String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME, "phone = ? ", new String[]{(phone)});
     }
